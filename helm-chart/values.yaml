@@ -1,0 +1,14 @@
+shiny:
+  image:
+    repository: cthiounn/sommaire-accords
+    tag: "latest"
+  ingress:
+    enabled: true
+    hostname: sommaire-accords.lab.sspcloud.fr
+#  resources:
+#    requests:
+#      nvidia.com/gpu: 1
+#    limits:
+#      nvidia.com/gpu: 1
+  probe:
+    enabled: false
