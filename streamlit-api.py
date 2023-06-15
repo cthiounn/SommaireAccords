@@ -4,13 +4,9 @@ import numpy as np
 import pdf2image
 import os
 import streamlit as st
-import pandas as pd
 from io import StringIO
+import tempfile
 
-
-
-PATH_OF_THE_PDF="./"
-NAME_OF_THE_PDF_TO_READ="Accord-denteprise-ITG-DD2_0.pdf"
 TESSERACT_LANGUAGE="fra"
 SHOW_IMAGE=True
 PRINT_DETECTED_TITLE=False
@@ -30,7 +26,14 @@ model = lp.models.Detectron2LayoutModel(
 
 uploaded_file = st.file_uploader("Choisir un PDF")
 if uploaded_file is not None:
-    all_images = pdf_to_img(uploaded_file)
+    file_name="tempfilename"
+    temp_local_dir = tempfile.mkdtemp()
+    file_path = os.path.join(temp_local_dir, file_name)
+    pdf=uploaded_file.getvalue()
+    with open(file_path, "wb") as binary_file:
+        binary_file.write(pdf)
+        
+    all_images = pdf_to_img(file_path)
     list_of_titles=[]
     for one_image in all_images:
         one_image_np = np.asarray(one_image)
@@ -51,3 +54,5 @@ if uploaded_file is not None:
             list_of_titles.append(txt)
             if PRINT_DETECTED_TITLE:
                 print(txt, end="\n---\n")
+    if os.path.exists(file_path):
+        os.remove(file_path) # Delete file
