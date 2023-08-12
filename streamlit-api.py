@@ -17,12 +17,28 @@ def pdf_to_img(pdf_file):
     )
     
 model = lp.models.Detectron2LayoutModel(
-    "lp://PubLayNet/mask_rcnn_X_101_32x8d_FPN_3x/config",
+    config_path ="config.yaml",
+    model_path ="model_final.pth",
     extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.5],
     label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"},
 )
-    
 
+model1 = lp.models.Detectron2LayoutModel(
+    config_path ="config_dares.yaml",
+    model_path ="model_final_dares_1.pth",
+    extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.5],
+    label_map={3: "Text", 4: "Title", 1: "List", 2: "Table", 0: "Figure"},
+)
+
+model2 = lp.models.Detectron2LayoutModel(
+    config_path ="config_dares.yaml",
+    model_path ="model_final_dares_2.pth",
+    extra_config=["MODEL.ROI_HEADS.SCORE_THRESH_TEST", 0.5],
+    label_map={3: "Text", 4: "Title", 1: "List", 2: "Table", 0: "Figure"},
+)
+
+
+col1, col2, col3 = st.columns(3)
 
 uploaded_file = st.file_uploader("Choisir un PDF")
 if uploaded_file is not None:
@@ -38,8 +54,15 @@ if uploaded_file is not None:
     for one_image in all_images:
         one_image_np = np.asarray(one_image)
         layout = model.detect(one_image_np)
+        layout1 = model1.detect(one_image_np)
+        layout2 = model2.detect(one_image_np)
         if SHOW_IMAGE:
-            st.image(lp.draw_box(one_image_np, layout, box_width=3, show_element_type=True), caption="Titres détectés", use_column_width=True)
+            with col1:
+                st.image(lp.draw_box(one_image_np, layout, box_width=3, show_element_type=True), caption="Titres détectés", use_column_width=True)
+            with col2:
+                st.image(lp.draw_box(one_image_np, layout1, box_width=3, show_element_type=True), caption="Titres détectés", use_column_width=True)
+            with col3:
+                st.image(lp.draw_box(one_image_np, layout2, box_width=3, show_element_type=True), caption="Titres détectés", use_column_width=True)
         title_blocks = lp.Layout([b for b in layout if b.type == "Title"])
         ocr_agent = lp.TesseractAgent(languages=TESSERACT_LANGUAGE)
         for block in title_blocks:
