@@ -15,8 +15,8 @@ PRINT_DETECTED_TITLE=False
 modele = st.radio(
     "Modèle d'inférence de la Dares",
     ('Modèle 1 : 7000', 'Modèle 2 : 900'))
-base_threshold = st.slider('Base Threshold', 0, 100, 50) / 100
-modele_threshold = st.slider('Dares Threshold', 0, 100, 50) / 100
+base_threshold = st.slider('Seuil de tolérance pour le modèle de base', 0, 100, 50) / 100
+modele_threshold = st.slider('Seuil de tolérance pour le modèle Dares', 0, 100, 50) / 100
 
 
 def pdf_to_img(pdf_file):
