@@ -22,7 +22,7 @@ POPPLER_PATH = r"/usr/share/poppler"
 # https://stackoverflow.com/questions/64048828/pytesseract-gives-an-error-permissionerror-winerror-5-access-is-denied
 def pdf_to_img(pdf_file):
     return pdf2image.convert_from_path(pdf_file,
-        grayscale=True,thread_count=os.cpu_count())
+        grayscale=False,thread_count=os.cpu_count())
 
 def ocr_core(file,lang,config):
     if lang:
