@@ -8,3 +8,14 @@ layoutparser
 layoutparser[layoutmodels]
 layoutparser[ocr]
 git+https://github.com/facebookresearch/detectron2.git
+numpy
+tqdm
+rouge_score
+pyrouge
+transformers
+jupyterlab
+datasets
+wget
+nltk
+ipywidgets
+scipy
